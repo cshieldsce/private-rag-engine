@@ -1,0 +1,26 @@
+# FastAPI and server
+fastapi==0.109.0
+uvicorn[standard]==0.27.0
+
+# Configuration
+pydantic-settings==2.1.0
+python-dotenv==1.0.0
+
+# LangChain core and components (pinned to known-working versions)
+langchain==0.1.20
+langchain-core==0.1.52
+langchain-community==0.0.38
+langchain-openai==0.1.7
+langchain-text-splitters==0.0.1
+
+# Vector database (specific version known to work)
+chromadb==0.4.22
+numpy==1.26.4
+
+# PDF processing
+pypdf==4.0.0
+
+# OpenAI and utilities (fixed version conflict)
+openai==1.24.0
+tiktoken==0.6.0
+requests==2.31.0
