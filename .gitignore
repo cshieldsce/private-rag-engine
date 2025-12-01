@@ -1,3 +1,4 @@
 chroma_db.backup/
 chroma_db/
 documents/test.pdf
+.env

@@ -5,7 +5,7 @@ from langchain_openai import OpenAIEmbeddings, ChatOpenAI
 from langchain_community.vectorstores import Chroma
 from langchain.chains import RetrievalQA
 from langchain.prompts import PromptTemplate
-from src.config import settings
+from src.config import settings, get_openai_client
 
 
 app = FastAPI(title="PrivateDoc AI", version="1.0.0")
@@ -31,7 +31,7 @@ def check_api_key():
 
 def get_vectorstore():
     """Initialize and return ChromaDB vectorstore."""
-    embeddings = OpenAIEmbeddings(openai_api_key=settings.openai_api_key)
+    embeddings = OpenAIEmbeddings(model=settings.openai_embedding_model)
     vectorstore = Chroma(
         persist_directory=settings.chroma_persist_directory,
         embedding_function=embeddings
@@ -47,17 +47,13 @@ async def chat(request: ChatRequest):
     check_api_key()
     
     try:
-        # Initialize vectorstore
         vectorstore = get_vectorstore()
         
-        # Initialize LLM
         llm = ChatOpenAI(
             model=settings.openai_model,
-            openai_api_key=settings.openai_api_key,
             temperature=0
         )
         
-        # Create prompt template
         template = """Use the following pieces of context to answer the question at the end.
 If you don't know the answer, just say that you don't know, don't try to make up an answer.
 
@@ -73,7 +69,6 @@ Answer:"""
             input_variables=["context", "question"]
         )
         
-        # Create RetrievalQA chain (old LangChain 0.1.x API)
         qa_chain = RetrievalQA.from_chain_type(
             llm=llm,
             chain_type="stuff",
@@ -82,10 +77,8 @@ Answer:"""
             chain_type_kwargs={"prompt": PROMPT}
         )
         
-        # Execute query
         result = qa_chain({"query": request.query})
         
-        # Extract sources
         sources = [doc.metadata.get("source", "unknown") for doc in result["source_documents"]]
         
         return ChatResponse(

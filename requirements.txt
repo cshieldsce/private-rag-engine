@@ -6,21 +6,22 @@ uvicorn[standard]==0.27.0
 pydantic-settings==2.1.0
 python-dotenv==1.0.0
 
-# LangChain core and components (pinned to known-working versions)
-langchain==0.1.20
-langchain-core==0.1.52
-langchain-community==0.0.38
-langchain-openai==0.1.7
-langchain-text-splitters==0.0.1
+# LangChain - newer versions without proxy bug
+langchain==0.2.16
+langchain-core==0.2.38
+langchain-community==0.2.16
+langchain-openai==0.1.23
+langchain-text-splitters==0.2.4
 
-# Vector database (specific version known to work)
-chromadb==0.4.22
+# Vector database
+chromadb==0.5.5
 numpy==1.26.4
 
 # PDF processing
 pypdf==4.0.0
 
-# OpenAI and utilities (fixed version conflict)
-openai==1.24.0
-tiktoken==0.6.0
+# OpenAI and utilities
+openai==1.45.0
+tiktoken==0.7.0
 requests==2.31.0
+pydantic==2.9.2
